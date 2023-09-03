@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.Shared", "FindYourHome.Shared\FindYourHome.Shared.csproj", "{003AE482-946E-4740-85E8-28BCC5633DA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.API", "FindYourHome.API\FindYourHome.API.csproj", "{0DD96CA3-328E-4D3B-B189-978245D61F30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.WEB", "FindYourHome.WEB\FindYourHome.WEB.csproj", "{D9853298-2C9F-490C-9C1D-F59435F152AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.Mobile", "FindYourHome.Mobile\FindYourHome.Mobile.csproj", "{49CA5667-1FE4-4EF8-B027-ED917294F692}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{003AE482-946E-4740-85E8-28BCC5633DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{003AE482-946E-4740-85E8-28BCC5633DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{003AE482-946E-4740-85E8-28BCC5633DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{003AE482-946E-4740-85E8-28BCC5633DA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DD96CA3-328E-4D3B-B189-978245D61F30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DD96CA3-328E-4D3B-B189-978245D61F30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DD96CA3-328E-4D3B-B189-978245D61F30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DD96CA3-328E-4D3B-B189-978245D61F30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9853298-2C9F-490C-9C1D-F59435F152AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9853298-2C9F-490C-9C1D-F59435F152AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9853298-2C9F-490C-9C1D-F59435F152AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9853298-2C9F-490C-9C1D-F59435F152AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49CA5667-1FE4-4EF8-B027-ED917294F692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49CA5667-1FE4-4EF8-B027-ED917294F692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49CA5667-1FE4-4EF8-B027-ED917294F692}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{49CA5667-1FE4-4EF8-B027-ED917294F692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49CA5667-1FE4-4EF8-B027-ED917294F692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49CA5667-1FE4-4EF8-B027-ED917294F692}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCC6867F-20C8-47A5-9126-ADBE88B555D0}
+	EndGlobalSection
+EndGlobal
