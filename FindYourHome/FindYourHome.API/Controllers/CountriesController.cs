@@ -24,6 +24,19 @@ namespace FindYourHome.API.Controllers
             return Ok(await _context.Countries.ToListAsync());
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> Get(int id)
+        {
+            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            if (country is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(country);
+        }
+
+
         [HttpPost]
 
         public async Task<ActionResult> Post(Country country)
