@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FindYourHome.Shared\FindYourHome.Shared.csproj" />
+    <ProjectReference Include="..\FindYourHome.WEB\FindYourHome.WEB.csproj" />
   </ItemGroup>
 
 </Project>
