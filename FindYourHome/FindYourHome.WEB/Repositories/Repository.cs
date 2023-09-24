@@ -56,38 +56,33 @@ namespace FindYourHome.WEB.Repositories
             return JsonSerializer.Deserialize<T>(respuestaString, jsonSerializerOptions)!;
         }
 
-        public async Task<HttpResponseWrapper<TResponse>> Put<T, TResponse>(string url, T model)
+        public async Task<HttpResponseWrapper<object>> Delete(string url)
         {
-            var messageJSON = JsonSerializer.Serialize(model);
-            var messageContet = new StringContent(messageJSON, Encoding.UTF8, "application/json");
-            var responseHttp = await _httpClient.PutAsync(url, messageContet);
-            if (responseHttp.IsSuccessStatusCode)
-            {
-                var response = await UnserializeAnswer<TResponse>(responseHttp, _jsonDefaultOptions);
-                return new HttpResponseWrapper<TResponse>(response, false, responseHttp);
-
-
-            }
-            return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
-
+            var responseHTTP = await _httpClient.DeleteAsync(url);
+            return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
         }
 
         public async Task<HttpResponseWrapper<object>> Put<T>(string url, T model)
         {
-            var mesageJSON = JsonSerializer.Serialize(model);
-            var messageContet = new StringContent(mesageJSON, Encoding.UTF8, "application/json");
-            var responseHttp = await _httpClient.PutAsync(url, messageContet);
+            var messageJSON = JsonSerializer.Serialize(model);
+            var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");
+            var responseHttp = await _httpClient.PutAsync(url, messageContent);
             return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
 
-        public async Task<HttpResponseWrapper<object>> Delete(string url)
+        public async Task<HttpResponseWrapper<TResponse>> Put<T, TResponse>(string url, T model)
         {
+            var messageJSON = JsonSerializer.Serialize(model);
+            var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");
+            var responseHttp = await _httpClient.PutAsync(url, messageContent);
+            if (responseHttp.IsSuccessStatusCode)
+            {
+                var response = await UnserializeAnswer<TResponse>(responseHttp, _jsonDefaultOptions);
+                return new HttpResponseWrapper<TResponse>(response, false, responseHttp);
+            }
 
-            var responseHTTP = await _httpClient.DeleteAsync(url);
-            return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
-
-
-
+            return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
+
     }
 }
