@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.Shared", "FindYourHome.Shared\FindYourHome.Shared.csproj", "{003AE482-946E-4740-85E8-28BCC5633DA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindYourHome.Shared", "FindYourHome.Shared\FindYourHome.Shared.csproj", "{003AE482-946E-4740-85E8-28BCC5633DA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.API", "FindYourHome.API\FindYourHome.API.csproj", "{0DD96CA3-328E-4D3B-B189-978245D61F30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindYourHome.API", "FindYourHome.API\FindYourHome.API.csproj", "{0DD96CA3-328E-4D3B-B189-978245D61F30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.WEB", "FindYourHome.WEB\FindYourHome.WEB.csproj", "{D9853298-2C9F-490C-9C1D-F59435F152AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindYourHome.WEB", "FindYourHome.WEB\FindYourHome.WEB.csproj", "{D9853298-2C9F-490C-9C1D-F59435F152AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindYourHome.Mobile", "FindYourHome.Mobile\FindYourHome.Mobile.csproj", "{49CA5667-1FE4-4EF8-B027-ED917294F692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindYourHome.Mobile", "FindYourHome.Mobile\FindYourHome.Mobile.csproj", "{49CA5667-1FE4-4EF8-B027-ED917294F692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

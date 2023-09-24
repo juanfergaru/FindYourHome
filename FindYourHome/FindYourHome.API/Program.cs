@@ -10,11 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Inyeccion de dependencias a SQL SERVER
+// inyección de dependencias a SQL SERVER
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
-
-// Configuracion del puerto por el cual se ejecuta el proyecto WEB
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:8000") });
 
 var app = builder.Build();
 
