@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace FindYourHome.Shared.Entities
@@ -18,5 +19,15 @@ namespace FindYourHome.Shared.Entities
         [JsonIgnore]
         public State State { get; set; }
 
+
+        public ICollection<User>? Users { get; set; }
+
+        [Display(Name = "Usuario")]
+        public int UserNumber => Users == null ? 0 : Users.Count;
+
+/*
+        [JsonIgnore]
+        public User User { get; set; }
+*/
     }
 }
