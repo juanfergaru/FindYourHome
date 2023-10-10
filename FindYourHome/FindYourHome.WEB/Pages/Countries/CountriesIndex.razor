@@ -44,11 +44,11 @@
 </GenericList>
 
 @code {
-    public List<Country>? Countries { get; set; }
+    public List<State>? Countries { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
-        var responseHppt = await repository.Get<List<Country>>("/api/countries");
+        var responseHppt = await repository.Get<List<State>>("/api/countries");
         Countries = responseHppt.Response!;
     }
 

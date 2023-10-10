@@ -1,6 +1,5 @@
 ﻿using FindYourHome.API.Data;
 using FindYourHome.Shared.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -114,7 +113,7 @@ namespace FindYourHome.API.Controllers
         }
 
 
-
+/*
         [AllowAnonymous]
         [HttpGet("combo/{countryId:int}")]
         public async Task<ActionResult> GetCombo(int countryId)
@@ -123,6 +122,6 @@ namespace FindYourHome.API.Controllers
                 .Where(x => x.CountryId == countryId)
                 .ToListAsync());
         }
-
+*/
     }
 }
