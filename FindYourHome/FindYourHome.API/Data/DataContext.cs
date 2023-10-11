@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 namespace FindYourHome.API.Data
 {
 
-    public class DataContext : Microsoft.EntityFrameworkCore.DbContext
+    public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-      
+
         //Estado/Barrio
         public DbSet<State> States { get; set; }
 
@@ -29,6 +29,12 @@ namespace FindYourHome.API.Data
         //propiedad
         public DbSet<Ownership> Ownerships { get; set; }
 
+        //Contrato
+        public DbSet<Contract> Contracts { get; set; }
+
+        //Pagos
+        public DbSet<Payment> Payments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,11 +45,16 @@ namespace FindYourHome.API.Data
             modelBuilder.Entity<Tenant>().HasIndex(c => c.Id).IsUnique();
             modelBuilder.Entity<Advisor>().HasIndex(c => c.Id).IsUnique();
 
+            // modelBuilder.Entity<Contract>()
+            // .HasMany(c => c.Payments).WithMany(p => p.Contracts).HasForeignKey(p => p.ContratoId);
+
+
+
             //relacion con inmueble (Ownership)
             modelBuilder.Entity<Ownership>().Property(o => o.MonthlyPrice).HasPrecision(20, 2);
-           // modelBuilder.Entity<Ownership>().HasOne(o => o.Owner).WithMany(owner => owner.Ownerships).HasForeignKey(o => o.OwnerId).OnDelete(DeleteBehavior.Restrict);
-           // modelBuilder.Entity<Ownership>().HasOne(o => o.Advisor).WithMany(advisor => advisor.Ownerships).HasForeignKey(o => o.AdvisorId).OnDelete(DeleteBehavior.Restrict);
-            
+            // modelBuilder.Entity<Ownership>().HasOne(o => o.Owner).WithMany(owner => owner.Ownerships).HasForeignKey(o => o.OwnerId).OnDelete(DeleteBehavior.Restrict);
+            // modelBuilder.Entity<Ownership>().HasOne(o => o.Advisor).WithMany(advisor => advisor.Ownerships).HasForeignKey(o => o.AdvisorId).OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

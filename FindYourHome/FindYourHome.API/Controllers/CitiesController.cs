@@ -9,11 +9,11 @@ namespace FindYourHome.API.Controllers
     [ApiController]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/cities")]
-    public class CitiesController : ControllerBase
+    public class ContractsController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public CitiesController(DataContext context)
+        public ContractsController(DataContext context)
         {
             _context = context;
         }

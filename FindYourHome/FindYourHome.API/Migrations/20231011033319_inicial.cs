@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace FindYourHome.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -126,6 +127,59 @@ namespace FindYourHome.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Contracts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", maxLength: 20, nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", maxLength: 20, nullable: false),
+                    RentAmount = table.Column<decimal>(type: "decimal(18,2)", maxLength: 50, nullable: false),
+                    ContractStatus = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    OwnershipId = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Ownerships_OwnershipId",
+                        column: x => x.OwnershipId,
+                        principalTable: "Ownerships",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DatePayment = table.Column<DateTime>(type: "datetime2", maxLength: 20, nullable: false),
+                    PaymentAmount = table.Column<decimal>(type: "decimal(18,2)", maxLength: 50, nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ContractId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Contracts_ContractId",
+                        column: x => x.ContractId,
+                        principalTable: "Contracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Advisors_Id",
                 table: "Advisors",
@@ -137,6 +191,16 @@ namespace FindYourHome.API.Migrations
                 table: "Cities",
                 columns: new[] { "StateId", "Name" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_OwnershipId",
+                table: "Contracts",
+                column: "OwnershipId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_TenantId",
+                table: "Contracts",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Owners_Id",
@@ -153,6 +217,11 @@ namespace FindYourHome.API.Migrations
                 name: "IX_Ownerships_OwnerId",
                 table: "Ownerships",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_ContractId",
+                table: "Payments",
+                column: "ContractId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_States_Name",
@@ -174,13 +243,19 @@ namespace FindYourHome.API.Migrations
                 name: "Cities");
 
             migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "States");
+
+            migrationBuilder.DropTable(
+                name: "Contracts");
+
+            migrationBuilder.DropTable(
                 name: "Ownerships");
 
             migrationBuilder.DropTable(
                 name: "Tenants");
-
-            migrationBuilder.DropTable(
-                name: "States");
 
             migrationBuilder.DropTable(
                 name: "Advisors");
