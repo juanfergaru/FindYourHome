@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindYourHome.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231011033319_inicial")]
-    partial class inicial
+    [Migration("20231012131813_inicialV2")]
+    partial class inicialV2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,22 +99,19 @@ namespace FindYourHome.API.Migrations
 
                     b.Property<string>("ContractStatus")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("EndDate")
-                        .HasMaxLength(20)
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OwnershipId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("RentAmount")
-                        .HasMaxLength(50)
+                    b.Property<decimal>("RentPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasMaxLength(20)
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TenantId")
@@ -229,22 +226,20 @@ namespace FindYourHome.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DatePayment")
-                        .HasMaxLength(20)
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal>("PaymentAmount")
-                        .HasMaxLength(50)
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<decimal>("PaymentPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 

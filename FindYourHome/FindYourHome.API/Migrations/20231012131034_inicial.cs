@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -133,9 +132,9 @@ namespace FindYourHome.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", maxLength: 20, nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", maxLength: 20, nullable: false),
-                    RentAmount = table.Column<decimal>(type: "decimal(18,2)", maxLength: 50, nullable: false),
+                    StartDate = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    EndDate = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    RentAmount = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ContractStatus = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     OwnershipId = table.Column<int>(type: "int", nullable: false),
                     TenantId = table.Column<int>(type: "int", nullable: false)
@@ -163,8 +162,8 @@ namespace FindYourHome.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DatePayment = table.Column<DateTime>(type: "datetime2", maxLength: 20, nullable: false),
-                    PaymentAmount = table.Column<decimal>(type: "decimal(18,2)", maxLength: 50, nullable: false),
+                    DatePayment = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PaymentAmount = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PaymentStatus = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     ContractId = table.Column<int>(type: "int", nullable: false)
