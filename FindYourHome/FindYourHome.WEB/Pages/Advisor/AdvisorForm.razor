@@ -1,0 +1,106 @@
+﻿@using FindYourHome.Shared.Entities;
+@inject SweetAlertService swal
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+<EditForm EditContext="editContext" OnSubmit="OnSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Documento:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Advisor.Document" />
+            <ValidationMessage For="@(() => Advisor.Document)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Nombre del Propietario:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Advisor.FirstName" />
+            <ValidationMessage For="@(() => Advisor.FirstName)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Apellidos del Propietario:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Advisor.LastName" />
+            <ValidationMessage For="@(() => Advisor.LastName)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Dirección:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Advisor.Address" />
+            <ValidationMessage For="@(() => Advisor.Address)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Foto:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Advisor.Photo" />
+            <ValidationMessage For="@(() => Advisor.Photo)" />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" type="button" @onclick="ReturnAction">Regresar</button>
+</EditForm>
+
+@code {
+
+
+    private EditContext editContext = null!;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Advisor);
+    }
+
+    [EditorRequired]
+    [Parameter]
+    public Advisor Advisor { get; set; } = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formWasEdited = editContext.IsModified();
+
+        if (!formWasEdited)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var result = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirm = !string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}
+
+

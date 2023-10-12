@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 namespace FindYourHome.API.Controllers
 {
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/states")]
     public class StatesController : ControllerBase
     {
@@ -37,17 +36,6 @@ namespace FindYourHome.API.Controllers
             }
 
             return Ok(state);
-        }
-
-
-
-        [HttpGet("full")]
-        public async Task<ActionResult> GetFull()
-        {
-            return Ok(await _context.States
-                .Include(x => x.Cities!)
-
-                .ToListAsync());
         }
 
         [HttpPost]
@@ -111,17 +99,5 @@ namespace FindYourHome.API.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
-
-
-/*
-        [AllowAnonymous]
-        [HttpGet("combo/{countryId:int}")]
-        public async Task<ActionResult> GetCombo(int countryId)
-        {
-            return Ok(await _context.States
-                .Where(x => x.CountryId == countryId)
-                .ToListAsync());
-        }
-*/
     }
 }

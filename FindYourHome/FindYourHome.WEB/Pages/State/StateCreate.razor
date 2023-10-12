@@ -1,0 +1,32 @@
+﻿@page "/states/create"
+
+@using FindYourHome.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Ciudad</h3>
+
+<StateForm @ref="stateForm" State="states" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private State states = new();
+    private StateForm? stateForm;
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/states", states);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        stateForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/states");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/states");
+    }
+}

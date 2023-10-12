@@ -1,19 +1,17 @@
 ﻿using FindYourHome.API.Data;
 using FindYourHome.Shared.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindYourHome.API.Controllers
 {
     [ApiController]
-
-    [Route("/api/Cities")]
-    public class CitiesController : ControllerBase
+    [Route("/api/Owners")]
+    public class OwnersController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public CitiesController(DataContext context)
+        public OwnersController(DataContext context)
         {
             _context = context;
         }
@@ -21,42 +19,39 @@ namespace FindYourHome.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.Cities.ToListAsync());
+            return Ok(await _context.Owners
+                .Include(x => x.Ownerships)
+                .ToListAsync());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var city = await _context.Cities.FirstOrDefaultAsync(x => x.Id == id);
-            if (city == null)
+            var state = await _context.Owners
+                .Include(x => x.Ownerships)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (state == null)
             {
                 return NotFound();
             }
 
-            return Ok(city);
+            return Ok(state);
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(City city)
+        public async Task<ActionResult> PostAsync(Owner owner)
         {
             try
             {
-                var state = await _context.States.FindAsync(city.StateId);
-                if (state == null)
-                {
-                    return NotFound("State not found.");
-                }
-                city.State = state;
-
-                _context.Cities.Add(city);
+                _context.Add(owner);
                 await _context.SaveChangesAsync();
-                return Ok(city);
+                return Ok(owner);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe una ciudad con el mismo nombre.");
+                    return BadRequest("Ya existe un Propietario con el mismo nombre.");
                 }
 
                 return BadRequest(dbUpdateException.Message);
@@ -68,19 +63,19 @@ namespace FindYourHome.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutAsync(City city)
+        public async Task<ActionResult> PutAsync(Owner owner)
         {
             try
             {
-                _context.Update(city);
+                _context.Update(owner);
                 await _context.SaveChangesAsync();
-                return Ok(city);
+                return Ok(owner);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe una ciudad con el mismo nombre.");
+                    return BadRequest("Ya existe un Propietario con el mismo nombre.");
                 }
 
                 return BadRequest(dbUpdateException.Message);
@@ -94,25 +89,16 @@ namespace FindYourHome.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var city = await _context.Cities.FirstOrDefaultAsync(x => x.Id == id);
-            if (city == null)
+            var owner = await _context.Owners.FirstOrDefaultAsync(x => x.Id == id);
+            if (owner == null)
             {
                 return NotFound();
             }
 
-            _context.Remove(city);
+            _context.Remove(owner);
             await _context.SaveChangesAsync();
             return NoContent();
         }
-
-        [AllowAnonymous]
-        [HttpGet("combo/{stateId:int}")]
-        public async Task<ActionResult> GetCombo(int stateId)
-        {
-            return Ok(await _context.Cities
-                .Where(x => x.StateId == stateId)
-                .ToListAsync());
-        }
-
     }
+
 }

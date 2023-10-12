@@ -1,0 +1,32 @@
+﻿@page "/Cities/create"
+
+@using FindYourHome.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Ciudad</h3>
+
+<CityForm @ref="cityForm" City="cities" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private City cities = new();
+    private CityForm? cityForm;
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/Cities", cities);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        cityForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/Cities");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/Cities");
+    }
+}

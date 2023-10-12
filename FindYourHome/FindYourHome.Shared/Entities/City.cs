@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-
 namespace FindYourHome.Shared.Entities
 {
     public class City
@@ -12,10 +11,8 @@ namespace FindYourHome.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Name { get; set; }
 
+       [JsonIgnore]
+       public State? State { get; set; }
         public int StateId { get; set; }
-
-        [JsonIgnore]
-        public State State { get; set; }
-
     }
 }

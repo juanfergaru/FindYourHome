@@ -58,23 +58,6 @@ namespace FindYourHome.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tenants",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Document = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tenants", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Ownerships",
                 columns: table => new
                 {
@@ -97,13 +80,13 @@ namespace FindYourHome.API.Migrations
                         column: x => x.AdvisorId,
                         principalTable: "Advisors",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Ownerships_Owners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owners",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,7 +106,7 @@ namespace FindYourHome.API.Migrations
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -150,6 +133,12 @@ namespace FindYourHome.API.Migrations
                 column: "AdvisorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ownerships_Id",
+                table: "Ownerships",
+                column: "Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ownerships_OwnerId",
                 table: "Ownerships",
                 column: "OwnerId");
@@ -158,12 +147,6 @@ namespace FindYourHome.API.Migrations
                 name: "IX_States_Name",
                 table: "States",
                 column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tenants_Id",
-                table: "Tenants",
-                column: "Id",
                 unique: true);
         }
 
@@ -175,9 +158,6 @@ namespace FindYourHome.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ownerships");
-
-            migrationBuilder.DropTable(
-                name: "Tenants");
 
             migrationBuilder.DropTable(
                 name: "States");

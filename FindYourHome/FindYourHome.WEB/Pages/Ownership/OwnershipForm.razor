@@ -1,0 +1,128 @@
+﻿@using FindYourHome.Shared.Entities;
+@inject SweetAlertService swal
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+<EditForm EditContext="editContext" OnSubmit="OnSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Dirección:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Ownership.Address" />
+            <ValidationMessage For="@(() => Ownership.Address)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Código Postal:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Ownership.PostalCode" />
+            <ValidationMessage For="@(() => Ownership.PostalCode)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Número de Habitaciones:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@Ownership.NumberOfRooms" />
+            <ValidationMessage For="@(() => Ownership.NumberOfRooms)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Número de Baños:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@Ownership.NumberOfBathrooms" />
+            <ValidationMessage For="@(() => Ownership.NumberOfBathrooms)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Precio Mensual:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@Ownership.MonthlyPrice" />
+            <ValidationMessage For="@(() => Ownership.MonthlyPrice)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Estado:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Ownership.Status" />
+            <ValidationMessage For="@(() => Ownership.Status)" />
+        </div>
+    </div>
+
+     <div class="mb-3">
+        <label>ID Propietario:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@Ownership.OwnerId" />
+            <ValidationMessage For="@(() => Ownership.OwnerId)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>ID Asesor:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@Ownership.AdvisorId" />
+            <ValidationMessage For="@(() => Ownership.AdvisorId)" />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" type="button" @onclick="ReturnAction">Regresar</button>
+</EditForm>
+
+@code {
+
+
+    private EditContext editContext = null!;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Ownership);
+    }
+
+    [EditorRequired]
+    [Parameter]
+    public Ownership Ownership { get; set; } = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formWasEdited = editContext.IsModified();
+
+        if (!formWasEdited)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var result = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirm = !string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

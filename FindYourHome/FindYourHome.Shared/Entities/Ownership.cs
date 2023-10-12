@@ -1,21 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 namespace FindYourHome.Shared.Entities
 {
     public class Ownership//inmueble
     {
-
         public int Id { get; set; }
-
-        /*
-        [ForeignKey("Ciudad")] // FK → Ciudad.ciudadID
-        [Display(Name = "Ciudad")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public int CityID { get; set; }
-        public virtual City City { get; set; }
-         */
-
 
         [Display(Name = "Dirección")]
         [MaxLength(250, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
@@ -49,25 +38,15 @@ namespace FindYourHome.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Status { get; set; }
 
-
         [JsonIgnore]
-      //  [ForeignKey("Propietario")]
-      //  [Display(Name = "Propietario")]
-      //  [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public Owner? Owner { get; set; }
+
         public int OwnerId { get; set; }
 
         [JsonIgnore]
-        public Owner Owner { get; set; }
+        public Advisor? Advisor { get; set; }
 
-       
-        [JsonIgnore]
-       // [ForeignKey("Asesor")]
-      //  [Display(Name = "Asesor")]
-      //  [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public int AdvisorId { get; set; }
-
-        [JsonIgnore]
-        public Advisor Advisor { get; set; }
 
     }
 }
