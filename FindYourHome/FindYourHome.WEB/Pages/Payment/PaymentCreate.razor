@@ -1,0 +1,33 @@
+﻿@page "/Payments/create"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using FindYourHome.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Pago</h3>
+
+<PaymentForm @ref="paymentForm" Payment="payment" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Payment payment = new();
+    private PaymentForm? paymentForm;
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/Payments", payment);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        paymentForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/Payments");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/Payments");
+    }
+}

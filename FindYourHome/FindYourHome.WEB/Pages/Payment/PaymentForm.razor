@@ -1,0 +1,96 @@
+﻿@using CurrieTechnologies.Razor.SweetAlert2;
+@using FindYourHome.Shared.Entities;
+@inject SweetAlertService swal
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+<EditForm EditContext="editContext" OnSubmit="OnSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Fecha del pago:</label>
+        <div>
+            <InputDate class="form-control" @bind-Value="@Payment.DatePayment" />
+            <ValidationMessage For="@(() => Payment.DatePayment)" />
+        </div>
+    </div>
+       
+    <div class="mb-3">
+        <label>Valor o monto del pago:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@Payment.PaymentPrice" />
+            <ValidationMessage For="@(() => Payment.PaymentPrice)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Medio de pago:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Payment.PaymentMethod" />
+            <ValidationMessage For="@(() => Payment.PaymentMethod)" />
+        </div>
+    </div>
+        <div class="mb-3">
+            <label>Estado del pago:</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@Payment.PaymentStatus" />
+                <ValidationMessage For="@(() => Payment.PaymentStatus)" />
+            </div>
+    </div>   
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" type="button" @onclick="ReturnAction">Regresar</button>
+</EditForm>
+
+@code {
+
+
+    private EditContext editContext = null!;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Payment);
+    }
+
+    [EditorRequired]
+    [Parameter]
+    public Payment Payment { get; set; } = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formWasEdited = editContext.IsModified();
+
+        if (!formWasEdited)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var result = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirm = !string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}
