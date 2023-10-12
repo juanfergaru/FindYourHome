@@ -20,8 +20,9 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Pago</th>
-                    <th></th>
+                    <th>Codigo</th>
+                    <th>Fecha</th>
+                    <th>Valor</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +31,12 @@
                     <tr>
                         <td>
                             @Payment.Id
+                        </td>
+                        <td>
+                            @Payment.DatePayment
+                        </td>
+                        <td>
+                            @Payment.PaymentPrice
                         </td>
                         <td>
                             <a href="/Payments/edit/@Payment.Id" class="btn btn-warning">Editar</a>

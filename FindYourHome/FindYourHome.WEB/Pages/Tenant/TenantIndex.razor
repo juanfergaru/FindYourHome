@@ -20,8 +20,9 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Arrendatario</th>
-                    <th></th>
+                    <th>Codigo</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>                   
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +31,12 @@
                     <tr>
                         <td>
                             @Tenant.Id
+                        </td>
+                        <td>
+                            @Tenant.FirstName
+                        </td>
+                        <td>
+                            @Tenant.LastName
                         </td>
                         <td>
                             <a href="/Tenants/edit/@Tenant.Id" class="btn btn-warning">Editar</a>

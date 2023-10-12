@@ -26,17 +26,17 @@ namespace FindYourHome.Shared.Entities
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         public string ContractStatus { get; set; } = null!;
 
-        //inmuebleID(FK → Inmueble.inmuebleID) 1 a 1
+        ////inmuebleID(FK → Inmueble.inmuebleID) 1 a 1
         [JsonIgnore]
         public Ownership Ownership { get; set; }
         public int OwnershipId { get; set; }
 
-        //arrendatarioID(FK → Arrendatario.arrendatarioID) 1 a 1
+        ////arrendatarioID(FK → Arrendatario.arrendatarioID) 1 a 1
         [JsonIgnore]
         public Tenant Tenant { get; set; }
         public int TenantId { get; set; }
 
-        // 1 a N contratos a pagos
+        //// 1 a N contratos a pagos
         [JsonIgnore]
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
         [Display(Name = "Pagos")]

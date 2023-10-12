@@ -26,7 +26,7 @@ namespace FindYourHome.Shared.Entities
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         public string PaymentStatus { get; set; } = null!;
 
-        //contratoID(FK → Contrato.contratoID) 1 a N
+        ////contratoID(FK → Contrato.contratoID) 1 a N
         [JsonIgnore]
         public Contract Contract { get; set; }
         public int ContractId { get; set; }

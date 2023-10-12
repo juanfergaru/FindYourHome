@@ -20,8 +20,9 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Contrato</th>
-                    <th></th>
+                    <th>Codigo</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Terminacion</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +33,13 @@
                             @Contract.Id
                         </td>
                         <td>
-                            <a href="/Advisors/edit/@Contract.Id" class="btn btn-warning">Editar</a>
+                            @Contract.StartDate
+                        </td>
+                        <td>
+                            @Contract.EndDate
+                        </td>
+                        <td>
+                            <a href="/Contracts/edit/@Contract.Id" class="btn btn-warning">Editar</a>
                             <button class="btn btn-danger" @onclick=@(() => Delete(Contract))>Borrar</button>
 
                         </td>
