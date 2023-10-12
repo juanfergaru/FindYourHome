@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace FindYourHome.Shared.Entities
 {
     public class Advisor//Asesor
     {
         public int Id { get; set; }
-
 
         [Display(Name = "Documento")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
@@ -31,9 +32,8 @@ namespace FindYourHome.Shared.Entities
         [Display(Name = "Foto")]
         public string Photo { get; set; }
 
+        [JsonIgnore]
         public ICollection<Ownership>? Ownerships { get; set; } = new List<Ownership>();
 
-        [Display(Name = "Inmueble")]
-        public int OwnershipsNumber => Ownerships == null ? 0 : Ownerships.Count;
     }
 }

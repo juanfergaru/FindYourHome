@@ -1,0 +1,71 @@
+﻿@page "/Ownerships/edit/{Id:int}"
+
+@using FindYourHome.Shared.Entities;
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService swal
+
+<h3>Editar Inmueble</h3>
+
+@if (ownership is null)
+{
+    <div class="align-items-center">
+        <img src=" https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!bw700 " />
+    </div>
+}
+else
+{
+    <OwnershipForm @ref="ownershipForm" Ownership="ownership" OnSubmit="Edit" ReturnAction="Return" />
+}
+
+@code {
+    private Ownership? ownership;
+    private OwnershipForm? ownershipForm;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var responseHTTP = await repository.Get<Ownership>($"api/Ownerships/{Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("Ownerships");
+            }
+            else
+            {
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+                await swal.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            ownership = responseHTTP.Response;
+        }
+    }
+
+    private async Task Edit()
+    {
+        var responseHTTP = await repository.Put("api/Ownerships", ownership);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            ownershipForm!.FormPostedSuccessfully = true;
+            navigationManager.NavigateTo("Ownerships");
+        }
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("Ownerships");
+    }
+}
+

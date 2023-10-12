@@ -1,0 +1,32 @@
+﻿@page "/Ownerships/create"
+
+@using FindYourHome.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Propietario</h3>
+
+<OwnershipForm @ref="ownershipForm" Ownership="ownership" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Ownership ownership = new();
+    private OwnershipForm? ownershipForm;
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/Ownerships", ownership);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        ownershipForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/Ownerships");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/Ownerships");
+    }
+}

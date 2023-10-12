@@ -1,0 +1,32 @@
+﻿@page "/Advisors/create"
+
+@using FindYourHome.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Asesor</h3>
+
+<AdvisorForm @ref="advisorForm" Advisor="advisor" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Advisor advisor = new();
+    private AdvisorForm? advisorForm;
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/Advisors", advisor);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        advisorForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/Advisors");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/Advisors");
+    }
+}
