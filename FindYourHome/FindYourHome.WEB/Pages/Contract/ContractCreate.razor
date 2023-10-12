@@ -1,0 +1,33 @@
+﻿@page "/Contracts/create"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using FindYourHome.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Contrato</h3>
+
+<ContractForm @ref="contractForm" Contract="contract" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Contract contract = new();
+    private ContractForm? contractForm;
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/Contracts", contract);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        contractForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/Contracts");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/Contracts");
+    }
+}

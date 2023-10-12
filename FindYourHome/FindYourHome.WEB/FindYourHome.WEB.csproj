@@ -16,8 +16,4 @@
     <ProjectReference Include="..\FindYourHome.Shared\FindYourHome.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\" />
-  </ItemGroup>
-
 </Project>
