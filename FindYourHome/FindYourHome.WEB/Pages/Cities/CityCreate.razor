@@ -7,11 +7,19 @@
 
 <h3>Crear Ciudad</h3>
 
-<CityForm @ref="cityForm" City="cities" OnSubmit="Create" ReturnAction="Return" />
+<CityForm @ref="cityForm" City="cities" StatesList="states" OnSubmit="Create" ReturnAction="Return" />
 
 @code {
     private City cities = new();
     private CityForm? cityForm;
+    private List<State> states = new List<State>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var responseHppt = await repository.Get<List<State>>("api/states/combo");
+        states = responseHppt.Response!;
+    }
+
     private async Task Create()
     {
         var responseHttp = await repository.Post("/api/Cities", cities);

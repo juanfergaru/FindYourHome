@@ -13,9 +13,15 @@
     </div>
 
     <div class="mb-3">
-        <label>numero Ciudad:</label>
+        <label>Seleccione un estado:</label>
         <div>
-            <InputNumber class="form-control" @bind-Value="@City.StateId" />
+            <InputSelect class="form-control" @bind-Value="@City.StateId">
+                <option value="">Selecciona un estado</option>
+                @foreach (var state in StatesList)
+                {
+                    <option value="@state.Id">@state.Name</option>
+                }
+            </InputSelect>
             <ValidationMessage For="@(() => City.StateId)" />
         </div>
     </div>
@@ -26,8 +32,11 @@
 
 @code {
 
-
     private EditContext editContext = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public List<State> StatesList { get; set; } = new List<State>();
 
     protected override void OnInitialized()
     {
@@ -37,6 +46,8 @@
     [EditorRequired]
     [Parameter]
     public City City { get; set; } = null!;
+
+ 
 
     [EditorRequired]
     [Parameter]

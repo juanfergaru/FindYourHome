@@ -1,5 +1,6 @@
 ﻿using FindYourHome.API.Data;
 using FindYourHome.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -99,6 +100,14 @@ namespace FindYourHome.API.Controllers
             _context.Remove(advisor);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<IActionResult> GetCombo()
+        {
+            return Ok(await _context.Advisors.ToListAsync());
         }
     }
 

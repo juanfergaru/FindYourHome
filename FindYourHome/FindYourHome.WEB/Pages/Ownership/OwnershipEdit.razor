@@ -15,18 +15,29 @@
 }
 else
 {
-    <OwnershipForm @ref="ownershipForm" Ownership="ownership" OnSubmit="Edit" ReturnAction="Return" />
+    <OwnershipForm @ref="ownershipForm" Ownership="ownership" AdvisorList="advisors" OwnersList="owners" OnSubmit="Edit" ReturnAction="Return" />
 }
 
 @code {
+
     private Ownership? ownership;
     private OwnershipForm? ownershipForm;
+
+    public List<Owner> owners { get; set; } = new List<Owner>();
+    public List<Advisor> advisors { get; set; } = new List<Advisor>();
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+
+    var responseowners = await repository.Get<List<Owner>>("api/Owners/combo");
+    owners = responseowners.Response!;
+
+    var responseadvisors = await repository.Get<List<Advisor>>("api/Advisors/combo");
+     advisors = responseadvisors.Response!;
+
         var responseHTTP = await repository.Get<Ownership>($"api/Ownerships/{Id}");
 
         if (responseHTTP.Error)
