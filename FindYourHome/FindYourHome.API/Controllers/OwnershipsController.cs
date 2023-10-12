@@ -1,5 +1,6 @@
 ﻿using FindYourHome.API.Data;
 using FindYourHome.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -136,5 +137,6 @@ namespace FindYourHome.API.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
     }
 }

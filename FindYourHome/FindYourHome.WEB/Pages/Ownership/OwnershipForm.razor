@@ -50,35 +50,54 @@
         </div>
     </div>
 
-     <div class="mb-3">
-        <label>ID Propietario:</label>
+    <div class="mb-3">
+        <label>Propietario:</label>
         <div>
-            <InputNumber class="form-control" @bind-Value="@Ownership.OwnerId" />
+            <InputSelect class="form-control" @bind-Value="@Ownership.OwnerId">
+                <option value="">Selecciona un Propietario</option>
+                @foreach (var owners in OwnersList)
+                {
+                    <option value="@owners.Id">@owners.FirstName</option>
+                }
+            </InputSelect>
             <ValidationMessage For="@(() => Ownership.OwnerId)" />
         </div>
     </div>
 
     <div class="mb-3">
-        <label>ID Asesor:</label>
+        <label>Asesor:</label>
         <div>
-            <InputNumber class="form-control" @bind-Value="@Ownership.AdvisorId" />
+            <InputSelect class="form-control" @bind-Value="@Ownership.AdvisorId">
+                <option value="">Selecciona un Asesor</option>
+                @foreach (var advisor in AdvisorList)
+                {
+                    <option value="@advisor.Id">@advisor.FirstName</option>
+                }
+            </InputSelect>
             <ValidationMessage For="@(() => Ownership.AdvisorId)" />
         </div>
     </div>
+
 
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
     <button class="btn btn-success" type="button" @onclick="ReturnAction">Regresar</button>
 </EditForm>
 
 @code {
-
-
     private EditContext editContext = null!;
 
     protected override void OnInitialized()
     {
         editContext = new(Ownership);
     }
+
+    [EditorRequired]
+    [Parameter]
+    public List<Owner> OwnersList { get; set; } = new List<Owner>();
+
+    [EditorRequired]
+    [Parameter]
+    public List<Advisor> AdvisorList { get; set; } = new List<Advisor>();
 
     [EditorRequired]
     [Parameter]

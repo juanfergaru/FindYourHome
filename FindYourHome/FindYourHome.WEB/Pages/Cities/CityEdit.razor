@@ -7,7 +7,7 @@
 
 <h3>Editar Ciudad</h3>
 
-@if (cityForm is null)
+@if (cities is null)
 {
     <div class="align-items-center">
         <img src=" https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!bw700 " />
@@ -15,18 +15,23 @@
 }
 else
 {
-    <CityForm @ref="cityForm" City="cities" OnSubmit="Edit" ReturnAction="Return" />
+    <CityForm @ref="cityForm" City="cities" StatesList="states" OnSubmit="Edit" ReturnAction="Return" />
 }
 
 @code {
     private City? cities;
     private CityForm? cityForm;
 
+    private List<State> states = new List<State>();
+
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        var responseHppt = await repository.Get<List<State>>("api/states/combo");
+        states = responseHppt.Response!;
+
         var responseHTTP = await repository.Get<City>($"api/Cities/{Id}");
 
         if (responseHTTP.Error)
