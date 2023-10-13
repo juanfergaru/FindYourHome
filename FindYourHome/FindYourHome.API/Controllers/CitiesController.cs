@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace FindYourHome.API.Controllers
 {
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("/api/cities")]
+
+    [Route("/api/Cities")]
     public class CitiesController : ControllerBase
     {
         private readonly DataContext _context;
@@ -23,9 +23,6 @@ namespace FindYourHome.API.Controllers
         {
             return Ok(await _context.Cities.ToListAsync());
         }
-
-
-
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)
@@ -44,7 +41,14 @@ namespace FindYourHome.API.Controllers
         {
             try
             {
-                _context.Add(city);
+                var state = await _context.States.FindAsync(city.StateId);
+                if (state == null)
+                {
+                    return NotFound("State not found.");
+                }
+                city.State = state;
+
+                _context.Cities.Add(city);
                 await _context.SaveChangesAsync();
                 return Ok(city);
             }

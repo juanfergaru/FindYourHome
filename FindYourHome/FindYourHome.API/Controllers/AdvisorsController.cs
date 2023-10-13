@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FindYourHome.API.Controllers
 {
+
     [ApiController]
-    [Route("/api/states")]
-    public class StatesController : ControllerBase
+    [Route("/api/Advisors")]
+    public class AdvisorsController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public StatesController(DataContext context)
+        public AdvisorsController(DataContext context)
         {
             _context = context;
         }
@@ -20,16 +21,16 @@ namespace FindYourHome.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.States
-                .Include(x => x.Cities)
+            return Ok(await _context.Advisors
+                .Include(x => x.Ownerships)
                 .ToListAsync());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var state = await _context.States
-                .Include(x => x.Cities)
+            var state = await _context.Advisors
+                .Include(x => x.Ownerships)
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (state == null)
             {
@@ -40,19 +41,19 @@ namespace FindYourHome.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(State state)
+        public async Task<ActionResult> PostAsync(Advisor advisor)
         {
             try
             {
-                _context.Add(state);
+                _context.Add(advisor);
                 await _context.SaveChangesAsync();
-                return Ok(state);
+                return Ok(advisor);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe un estado/departamento con el mismo nombre.");
+                    return BadRequest("Ya existe un Asesor con el mismo nombre.");
                 }
 
                 return BadRequest(dbUpdateException.Message);
@@ -64,19 +65,19 @@ namespace FindYourHome.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutAsync(State state)
+        public async Task<ActionResult> PutAsync(Advisor advisor)
         {
             try
             {
-                _context.Update(state);
+                _context.Update(advisor);
                 await _context.SaveChangesAsync();
-                return Ok(state);
+                return Ok(advisor);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe un estado/departamento con el mismo nombre.");
+                    return BadRequest("Ya existe un Asesor con el mismo nombre.");
                 }
 
                 return BadRequest(dbUpdateException.Message);
@@ -90,22 +91,24 @@ namespace FindYourHome.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var state = await _context.States.FirstOrDefaultAsync(x => x.Id == id);
-            if (state == null)
+            var advisor = await _context.Advisors.FirstOrDefaultAsync(x => x.Id == id);
+            if (advisor == null)
             {
                 return NotFound();
             }
 
-            _context.Remove(state);
+            _context.Remove(advisor);
             await _context.SaveChangesAsync();
             return NoContent();
         }
 
+
         [AllowAnonymous]
         [HttpGet("combo")]
-        public async Task<ActionResult> GetCombo()
+        public async Task<IActionResult> GetCombo()
         {
-            return Ok(await _context.States.ToListAsync());
+            return Ok(await _context.Advisors.ToListAsync());
         }
     }
+
 }
