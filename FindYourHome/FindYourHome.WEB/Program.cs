@@ -13,6 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 //Inyectamos el patrón Repository al proyecto WEB
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddSweetAlert2();
 
 builder.Services.AddSweetAlert2();
 

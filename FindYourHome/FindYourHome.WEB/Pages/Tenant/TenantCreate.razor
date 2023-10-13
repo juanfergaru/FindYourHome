@@ -1,0 +1,33 @@
+﻿@page "/Tenants/create"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using FindYourHome.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Arrendatario</h3>
+
+<TenantForm @ref="tenantForm" Tenant="tenant" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Tenant tenant = new();
+    private TenantForm? tenantForm;
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/Tenants", tenant);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        tenantForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/Tenants");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/Tenants");
+    }
+}

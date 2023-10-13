@@ -1,0 +1,103 @@
+﻿@using CurrieTechnologies.Razor.SweetAlert2;
+@using FindYourHome.Shared.Entities;
+@inject SweetAlertService swal
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+<EditForm EditContext="editContext" OnSubmit="OnSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Documento:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Tenant.Document" />
+            <ValidationMessage For="@(() => Tenant.Document)" />
+        </div>
+    </div>      
+   
+    <div class="mb-3">
+        <label>Nombres:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Tenant.FirstName" />
+            <ValidationMessage For="@(() => Tenant.FirstName)" />
+        </div>
+    </div>
+        <div class="mb-3">
+        <label>Apellidos:</label>
+            <div>
+            <InputText class="form-control" @bind-Value="@Tenant.LastName" />
+            <ValidationMessage For="@(() => Tenant.LastName)" />
+            </div>
+    </div>   
+    <div class="mb-3">
+        <label>Dirección:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Tenant.Address" />
+            <ValidationMessage For="@(() => Tenant.Address)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Foto:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Tenant.Photo" />
+            <ValidationMessage For="@(() => Tenant.Photo)" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-success" type="button" @onclick="ReturnAction">Regresar</button>
+</EditForm>
+
+@code {
+
+
+    private EditContext editContext = null!;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Tenant);
+    }
+
+    [EditorRequired]
+    [Parameter]
+    public Tenant Tenant { get; set; } = null!;
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formWasEdited = editContext.IsModified();
+
+        if (!formWasEdited)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var result = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirm = !string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

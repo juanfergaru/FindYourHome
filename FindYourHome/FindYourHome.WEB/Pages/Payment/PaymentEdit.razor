@@ -1,0 +1,71 @@
+﻿@page "/Payments/edit/{Id:int}"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using FindYourHome.Shared.Entities;
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService swal
+
+<h3>Editar Pago</h3>
+
+@if (payment is null)
+{
+    <div class="align-items-center">
+        <img src=" https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!bw700 " />
+    </div>
+}
+else
+{
+    <PaymentForm @ref="paymentForm" Payment="payment" OnSubmit="Edit" ReturnAction="Return" />
+}
+
+@code {
+    private Payment? payment;
+    private PaymentForm? paymentForm;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var responseHTTP = await repository.Get<Payment>($"api/Payments/{Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("Payments");
+            }
+            else
+            {
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+                await swal.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            payment = responseHTTP.Response;
+        }
+    }
+
+    private async Task Edit()
+    {
+        var responseHTTP = await repository.Put("api/Payments", payment);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            paymentForm!.FormPostedSuccessfully = true;
+            navigationManager.NavigateTo("Payments");
+        }
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("Payments");
+    }
+}

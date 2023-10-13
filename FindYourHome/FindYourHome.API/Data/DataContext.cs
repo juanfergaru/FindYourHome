@@ -25,6 +25,15 @@ namespace FindYourHome.API.Data
 
         //propiedad
         public DbSet<Ownership> Ownerships { get; set; }
+        
+        //Arrendatario
+        public DbSet<Tenant> Tenants { get; set; }
+
+        //Contrato
+        public DbSet<Contract> Contracts { get; set; }
+
+        //Pagos
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +50,7 @@ namespace FindYourHome.API.Data
             modelBuilder.Entity<Ownership>().HasOne(o => o.Advisor).WithMany(advisor => advisor.Ownerships).HasForeignKey(o => o.AdvisorId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ownership>().HasIndex(c => c.Id).IsUnique();
+
 
         }
     }

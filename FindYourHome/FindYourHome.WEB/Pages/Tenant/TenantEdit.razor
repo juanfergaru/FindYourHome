@@ -1,0 +1,71 @@
+﻿@page "/Tenants/edit/{Id:int}"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using FindYourHome.Shared.Entities;
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService swal
+
+<h3>Editar Arrendatario</h3>
+
+@if (tenant is null)
+{
+    <div class="align-items-center">
+        <img src=" https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!bw700 " />
+    </div>
+}
+else
+{
+    <TenantForm @ref="tenantForm" Tenant="tenant" OnSubmit="Edit" ReturnAction="Return" />
+}
+
+@code {
+    private Tenant? tenant;
+    private TenantForm? tenantForm;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var responseHTTP = await repository.Get<Tenant>($"api/Tenants/{Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("Tenants");
+            }
+            else
+            {
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+                await swal.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            tenant = responseHTTP.Response;
+        }
+    }
+
+    private async Task Edit()
+    {
+        var responseHTTP = await repository.Put("api/Tenants", tenant);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            tenantForm!.FormPostedSuccessfully = true;
+            navigationManager.NavigateTo("Tenants");
+        }
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("Tenants");
+    }
+}
