@@ -13,6 +13,7 @@
 @code {
     private Tenant tenant = new();
     private TenantForm? tenantForm;
+
     private async Task Create()
     {
         var responseHttp = await repository.Post("/api/Tenants", tenant);

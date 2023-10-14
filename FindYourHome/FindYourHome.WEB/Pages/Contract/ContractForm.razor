@@ -34,7 +34,36 @@
             <InputText class="form-control" @bind-Value="@Contract.ContractStatus" />
             <ValidationMessage For="@(() => Contract.ContractStatus)" />
         </div>
-    </div>   
+    </div>
+
+    <div class="mb-3">
+        <label>Inmueble:</label>
+        <div>
+            <InputSelect class="form-control" @bind-Value="@Contract.OwnershipId">
+                <option value="">Selecciona un Inmuieble</option>
+                @foreach (var ownership in OwnershipList)
+                {
+                    <option value="@ownership.Id">@ownership.Address</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Contract.OwnershipId)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Arrendatario:</label>
+        <div>
+            <InputSelect class="form-control" @bind-Value="@Contract.TenantId">
+                <option value="">Selecciona un Arrendatario</option>
+                @foreach (var tenant in TenantList)
+                {
+                    <option value="@tenant.Id">@tenant.FirstName</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Contract.TenantId)" />
+        </div>
+    </div>
+
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
     <button class="btn btn-success" type="button" @onclick="ReturnAction">Regresar</button>
 </EditForm>
@@ -48,6 +77,14 @@
     {
         editContext = new(Contract);
     }
+
+    [EditorRequired]
+    [Parameter]
+    public List<Ownership> OwnershipList { get; set; } = new List<Ownership>();
+
+    [EditorRequired]
+    [Parameter]
+    public List<Tenant> TenantList { get; set; } = new List<Tenant>();
 
     [EditorRequired]
     [Parameter]

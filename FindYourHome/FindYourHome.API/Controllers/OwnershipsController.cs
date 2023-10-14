@@ -19,10 +19,19 @@ namespace FindYourHome.API.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _context.Ownerships.ToListAsync());
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("combo")]
         public async Task<IActionResult> GetCombo()
         {
             return Ok(await _context.Ownerships.ToListAsync());
         }
+
 
         [HttpPost]
         public async Task<ActionResult> PostAsync(Ownership ownership)
@@ -90,14 +99,7 @@ namespace FindYourHome.API.Controllers
             return Ok(ownerships);
         }
 
-        /*   [HttpGet("full")]
-           public async Task<ActionResult> GetFull()
-           {
-               return Ok(await _context.Ownerships
-                  .Include(x => x.Owner)
-                   .Include(x => x.Advisor)
-                   .ToListAsync());
-           }*/
+
 
         [HttpPut]
         public async Task<ActionResult> PutAsync(Ownership ownership)

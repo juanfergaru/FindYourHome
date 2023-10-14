@@ -8,11 +8,21 @@
 
 <h3>Crear Pago</h3>
 
-<PaymentForm @ref="paymentForm" Payment="payment" OnSubmit="Create" ReturnAction="Return" />
+<PaymentForm @ref="paymentForm" Payment="payment" ContractList="contracts" OnSubmit="Create" ReturnAction="Return" />
 
 @code {
     private Payment payment = new();
     private PaymentForm? paymentForm;
+
+    private List<Contract> contracts = new List<Contract>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var responseowners = await repository.Get<List<Contract>>("api/contracts/combo");
+        contracts = responseowners.Response!;
+    }
+
+
     private async Task Create()
     {
         var responseHttp = await repository.Post("/api/Payments", payment);

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FindYourHome.Shared.Entities
@@ -30,6 +31,9 @@ namespace FindYourHome.Shared.Entities
 
         [Display(Name = "Foto")]
         public string Photo { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Contract>? Contracts { get; set; } = new List<Contract>();
 
     }
 }

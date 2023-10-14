@@ -33,7 +33,23 @@
                 <InputText class="form-control" @bind-Value="@Payment.PaymentStatus" />
                 <ValidationMessage For="@(() => Payment.PaymentStatus)" />
             </div>
-    </div>   
+    </div>
+
+    <div class="mb-3">
+        <label>Contratos:</label>
+        <div>
+            <InputSelect class="form-control" @bind-Value="@Payment.ContractId">
+                <option value="">Selecciona un Contratos</option>
+                @foreach (var contract in ContractList)
+                {
+                    <option value="@contract.Id">@contract.Id</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Payment.ContractId)" />
+        </div>
+    </div>
+
+
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
     <button class="btn btn-success" type="button" @onclick="ReturnAction">Regresar</button>
 </EditForm>
@@ -47,6 +63,10 @@
     {
         editContext = new(Payment);
     }
+
+    [EditorRequired]
+    [Parameter]
+    public List<Contract> ContractList { get; set; } = new List<Contract>();
 
     [EditorRequired]
     [Parameter]

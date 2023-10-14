@@ -16,18 +16,27 @@
 }
 else
 {
-    <ContractForm @ref="contractForm" Contract="contract" OnSubmit="Edit" ReturnAction="Return" />
+    <ContractForm @ref="contractForm" Contract="contract" OwnershipList="ownerships" TenantList="Tenants" OnSubmit="Edit" ReturnAction="Return" />
 }
 
 @code {
     private Contract? contract;
     private ContractForm? contractForm;
 
+    private List<Ownership> ownerships = new List<Ownership>();
+    private List<Tenant> Tenants = new List<Tenant>();
+
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        var responseowners = await repository.Get<List<Ownership>>("api/Owners/combo");
+        ownerships = responseowners.Response!;
+
+        var responseadvisors = await repository.Get<List<Tenant>>("api/tenants/combo");
+        Tenants = responseadvisors.Response!;
+
         var responseHTTP = await repository.Get<Contract>($"api/Contracts/{Id}");
 
         if (responseHTTP.Error)

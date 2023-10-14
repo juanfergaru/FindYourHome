@@ -16,18 +16,23 @@
 }
 else
 {
-    <PaymentForm @ref="paymentForm" Payment="payment" OnSubmit="Edit" ReturnAction="Return" />
+    <PaymentForm @ref="paymentForm" Payment="payment" ContractList="contracts"  OnSubmit="Edit" ReturnAction="Return" />
 }
 
 @code {
     private Payment? payment;
     private PaymentForm? paymentForm;
 
+    private List<Contract> contracts = new List<Contract>();
+
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        var responseowners = await repository.Get<List<Contract>>("api/contracts/combo");
+        contracts = responseowners.Response!;
+
         var responseHTTP = await repository.Get<Payment>($"api/Payments/{Id}");
 
         if (responseHTTP.Error)
