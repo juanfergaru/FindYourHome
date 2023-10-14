@@ -55,9 +55,9 @@
         <div>
             <InputSelect class="form-control" @bind-Value="@Ownership.OwnerId">
                 <option value="">Selecciona un Propietario</option>
-                @foreach (var owners in OwnersList)
+                @foreach (var owner in OwnersList)
                 {
-                    <option value="@owners.Id">@owners.FirstName</option>
+                    <option value="@owner.Id">@owner.FirstName</option>
                 }
             </InputSelect>
             <ValidationMessage For="@(() => Ownership.OwnerId)" />

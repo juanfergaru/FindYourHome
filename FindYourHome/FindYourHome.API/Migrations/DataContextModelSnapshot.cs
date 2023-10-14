@@ -106,7 +106,8 @@ namespace FindYourHome.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("RentPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(20, 2)
+                        .HasColumnType("decimal(20,2)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -234,7 +235,8 @@ namespace FindYourHome.API.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("PaymentPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(20, 2)
+                        .HasColumnType("decimal(20,2)");
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
@@ -244,6 +246,9 @@ namespace FindYourHome.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContractId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
@@ -269,6 +274,46 @@ namespace FindYourHome.API.Migrations
                     b.ToTable("States");
                 });
 
+            modelBuilder.Entity("FindYourHome.Shared.Entities.Tenant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Document")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Tenants");
+                });
+
             modelBuilder.Entity("FindYourHome.Shared.Entities.City", b =>
                 {
                     b.HasOne("FindYourHome.Shared.Entities.State", "State")
@@ -283,15 +328,15 @@ namespace FindYourHome.API.Migrations
             modelBuilder.Entity("FindYourHome.Shared.Entities.Contract", b =>
                 {
                     b.HasOne("FindYourHome.Shared.Entities.Ownership", "Ownership")
-                        .WithMany()
+                        .WithMany("Contracts")
                         .HasForeignKey("OwnershipId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FindYourHome.Shared.Entities.Tenant", "Tenant")
-                        .WithMany()
+                        .WithMany("Contracts")
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Ownership");
@@ -344,9 +389,19 @@ namespace FindYourHome.API.Migrations
                     b.Navigation("Ownerships");
                 });
 
+            modelBuilder.Entity("FindYourHome.Shared.Entities.Ownership", b =>
+                {
+                    b.Navigation("Contracts");
+                });
+
             modelBuilder.Entity("FindYourHome.Shared.Entities.State", b =>
                 {
                     b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("FindYourHome.Shared.Entities.Tenant", b =>
+                {
+                    b.Navigation("Contracts");
                 });
 #pragma warning restore 612, 618
         }

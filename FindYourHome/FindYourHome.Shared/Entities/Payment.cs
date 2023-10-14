@@ -28,7 +28,7 @@ namespace FindYourHome.Shared.Entities
 
         ////contratoID(FK → Contrato.contratoID) 1 a N
         [JsonIgnore]
-        public Contract Contract { get; set; }
+        public Contract? Contract { get; set; }
         public int ContractId { get; set; }
 
     }

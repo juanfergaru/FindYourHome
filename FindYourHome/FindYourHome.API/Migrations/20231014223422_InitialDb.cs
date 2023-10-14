@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -58,6 +59,23 @@ namespace FindYourHome.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tenants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Document = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tenants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ownerships",
                 columns: table => new
                 {
@@ -109,6 +127,59 @@ namespace FindYourHome.API.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Contracts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RentPrice = table.Column<decimal>(type: "decimal(20,2)", precision: 20, scale: 2, nullable: false),
+                    ContractStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    OwnershipId = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Ownerships_OwnershipId",
+                        column: x => x.OwnershipId,
+                        principalTable: "Ownerships",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DatePayment = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentPrice = table.Column<decimal>(type: "decimal(20,2)", precision: 20, scale: 2, nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ContractId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Contracts_ContractId",
+                        column: x => x.ContractId,
+                        principalTable: "Contracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Advisors_Id",
                 table: "Advisors",
@@ -120,6 +191,16 @@ namespace FindYourHome.API.Migrations
                 table: "Cities",
                 columns: new[] { "StateId", "Name" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_OwnershipId",
+                table: "Contracts",
+                column: "OwnershipId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_TenantId",
+                table: "Contracts",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Owners_Id",
@@ -144,9 +225,26 @@ namespace FindYourHome.API.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_ContractId",
+                table: "Payments",
+                column: "ContractId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_Id",
+                table: "Payments",
+                column: "Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_States_Name",
                 table: "States",
                 column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tenants_Id",
+                table: "Tenants",
+                column: "Id",
                 unique: true);
         }
 
@@ -157,10 +255,19 @@ namespace FindYourHome.API.Migrations
                 name: "Cities");
 
             migrationBuilder.DropTable(
-                name: "Ownerships");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "States");
+
+            migrationBuilder.DropTable(
+                name: "Contracts");
+
+            migrationBuilder.DropTable(
+                name: "Ownerships");
+
+            migrationBuilder.DropTable(
+                name: "Tenants");
 
             migrationBuilder.DropTable(
                 name: "Advisors");

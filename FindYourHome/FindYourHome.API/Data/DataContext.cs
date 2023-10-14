@@ -51,7 +51,17 @@ namespace FindYourHome.API.Data
 
             modelBuilder.Entity<Ownership>().HasIndex(c => c.Id).IsUnique();
 
+            modelBuilder.Entity<Tenant>().HasIndex(c => c.Id).IsUnique();
+            modelBuilder.Entity<Contract>().HasOne(o => o.Tenant).WithMany(tenant => tenant.Contracts).HasForeignKey(o => o.TenantId).OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Payment>().HasIndex(c => c.Id).IsUnique();
+            modelBuilder.Entity<Contract>().HasOne(o => o.Ownership).WithMany(ownership => ownership.Contracts).HasForeignKey(o => o.OwnershipId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Contract>().Property(o => o.RentPrice).HasPrecision(20, 2);
+
+
+            modelBuilder.Entity<Payment>().Property(o => o.PaymentPrice).HasPrecision(20, 2);
+
+            
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 namespace FindYourHome.Shared.Entities
 {
@@ -47,6 +48,9 @@ namespace FindYourHome.Shared.Entities
         public Advisor? Advisor { get; set; }
 
         public int AdvisorId { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Contract>? Contracts { get; set; } = new List<Contract>();
 
     }
 }

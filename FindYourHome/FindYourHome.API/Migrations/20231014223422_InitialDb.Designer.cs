@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindYourHome.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231012131813_inicialV2")]
-    partial class inicialV2
+    [Migration("20231014223422_InitialDb")]
+    partial class InitialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,7 +109,8 @@ namespace FindYourHome.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("RentPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(20, 2)
+                        .HasColumnType("decimal(20,2)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -209,6 +210,9 @@ namespace FindYourHome.API.Migrations
 
                     b.HasIndex("AdvisorId");
 
+                    b.HasIndex("Id")
+                        .IsUnique();
+
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Ownerships");
@@ -234,7 +238,8 @@ namespace FindYourHome.API.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("PaymentPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(20, 2)
+                        .HasColumnType("decimal(20,2)");
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
@@ -244,6 +249,9 @@ namespace FindYourHome.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContractId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
@@ -314,7 +322,7 @@ namespace FindYourHome.API.Migrations
                     b.HasOne("FindYourHome.Shared.Entities.State", "State")
                         .WithMany("Cities")
                         .HasForeignKey("StateId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("State");
@@ -323,15 +331,15 @@ namespace FindYourHome.API.Migrations
             modelBuilder.Entity("FindYourHome.Shared.Entities.Contract", b =>
                 {
                     b.HasOne("FindYourHome.Shared.Entities.Ownership", "Ownership")
-                        .WithMany()
+                        .WithMany("Contracts")
                         .HasForeignKey("OwnershipId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FindYourHome.Shared.Entities.Tenant", "Tenant")
-                        .WithMany()
+                        .WithMany("Contracts")
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Ownership");
@@ -344,13 +352,13 @@ namespace FindYourHome.API.Migrations
                     b.HasOne("FindYourHome.Shared.Entities.Advisor", "Advisor")
                         .WithMany("Ownerships")
                         .HasForeignKey("AdvisorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FindYourHome.Shared.Entities.Owner", "Owner")
                         .WithMany("Ownerships")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Advisor");
@@ -384,9 +392,19 @@ namespace FindYourHome.API.Migrations
                     b.Navigation("Ownerships");
                 });
 
+            modelBuilder.Entity("FindYourHome.Shared.Entities.Ownership", b =>
+                {
+                    b.Navigation("Contracts");
+                });
+
             modelBuilder.Entity("FindYourHome.Shared.Entities.State", b =>
                 {
                     b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("FindYourHome.Shared.Entities.Tenant", b =>
+                {
+                    b.Navigation("Contracts");
                 });
 #pragma warning restore 612, 618
         }

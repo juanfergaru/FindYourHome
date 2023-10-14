@@ -28,19 +28,19 @@ namespace FindYourHome.Shared.Entities
 
         ////inmuebleID(FK → Inmueble.inmuebleID) 1 a 1
         [JsonIgnore]
-        public Ownership Ownership { get; set; }
+        public Ownership? Ownership { get; set; }
         public int OwnershipId { get; set; }
 
         ////arrendatarioID(FK → Arrendatario.arrendatarioID) 1 a 1
         [JsonIgnore]
-        public Tenant Tenant { get; set; }
+        public Tenant? Tenant { get; set; }
         public int TenantId { get; set; }
 
         //// 1 a N contratos a pagos
         [JsonIgnore]
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
-        [Display(Name = "Pagos")]
-        public int PaymentsNumber => Payments == null ? 0 : Payments.Count;
+       // [Display(Name = "Pagos")]
+      //  public int PaymentsNumber => Payments == null ? 0 : Payments.Count;
 
     }
 }
