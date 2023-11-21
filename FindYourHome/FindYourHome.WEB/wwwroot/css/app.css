@@ -1,5 +1,22 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+:root {    
+    /*modo luz*/
+        --fondo: white;
+        --fondo-letra: black;
+        --fondo-resaltado: #f7f7f7;
+        --fondo-resaltado-2:#e2e3e5;
+        --link: #0366d6;
+}
+
+.modo-oscuro {
+    --fondo: #2d2d2d;
+    --fondo-letra: white;
+    --fondo-resaltado: #393939;
+    --fondo-resaltado-2: #414648;
+    --link: #3ca4ff;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -9,7 +26,21 @@ h1:focus {
 }
 
 a, .btn-link {
-    color: #0071c1;
+    color: var(--link);    
+}
+
+.alert-secondary{
+    background-color:var(--fondo-resaltado-2);
+    color:var(--fondo-letra);
+}
+
+.table{
+    color:var(--fondo-letra);
+}
+
+div.main{
+    background-color:var(--fondo);
+    color:var(--fondo-letra);
 }
 
 .btn-primary {

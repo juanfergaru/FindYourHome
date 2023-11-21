@@ -1,11 +1,13 @@
 ﻿using FindYourHome.Shared.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace FindYourHome.API.Data
 {
 
-    public class DataContext : DbContext
+    //public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -25,7 +27,7 @@ namespace FindYourHome.API.Data
 
         //propiedad
         public DbSet<Ownership> Ownerships { get; set; }
-        
+
         //Arrendatario
         public DbSet<Tenant> Tenants { get; set; }
 
@@ -61,7 +63,7 @@ namespace FindYourHome.API.Data
 
             modelBuilder.Entity<Payment>().Property(o => o.PaymentPrice).HasPrecision(20, 2);
 
-            
+
         }
     }
 }

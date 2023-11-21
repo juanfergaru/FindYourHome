@@ -1,4 +1,5 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">FindYourHome.WEB</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -16,41 +17,66 @@
             </NavLink>
         </div>
 
+      <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Owners">
                 <span class="oi oi-plus" aria-hidden="true"></span> Propietario
             </NavLink>
         </div>
+        </Authorized>
+        </AuthorizeView>
 
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Advisors">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Asesor
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
 
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Ownerships">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Inmueble
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
 
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Tenants">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Arrendatarios
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
 
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Contracts">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Contratos
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
 
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Payments">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Pagos
             </NavLink>
         </div>
+            </Authorized>
+        </AuthorizeView>
+
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="States">
