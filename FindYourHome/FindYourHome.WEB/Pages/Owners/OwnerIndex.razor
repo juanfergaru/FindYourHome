@@ -19,8 +19,9 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Propietario</th>
-                    <th></th>
+                    <th>Codigo</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +29,13 @@
                 {
                     <tr>
                         <td>
+                            @Owner.Id
+                        </td>
+                        <td>
                             @Owner.FirstName
+                        </td>
+                        <td>
+                            @Owner.LastName
                         </td>
                         <td>
                             <a href="/Owners/edit/@Owner.Id" class="btn btn-warning">Editar</a>
